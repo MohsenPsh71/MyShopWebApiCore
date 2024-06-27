@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using SampleWebApiCore.Contracts;
 using SampleWebApiCore.Models;
+using SampleWebApiCore.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,11 @@ builder.Services.AddDbContext<MyShopDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectiion"));
 });
+
+//DI
+builder.Services.AddTransient<ICustomerRepository, CustomerRepository>();
+builder.Services.AddTransient<IProductRepository, ProductRepository>();
+builder.Services.AddTransient<ISalesPersonsRepository, SalesPersonsRepository>();
 
 var app = builder.Build();
 
