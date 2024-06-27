@@ -32,5 +32,5 @@ public partial class Order
 
     [ForeignKey("SalesPerson")]
     [InverseProperty("Orders")]
-    public virtual SalesPerson? SalesPersonNavigation { get; set; }
+    public virtual SalesPersons? SalesPersonNavigation { get; set; }
 }

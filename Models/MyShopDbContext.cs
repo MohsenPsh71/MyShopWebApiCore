@@ -21,9 +21,9 @@ public partial class MyShopDbContext : DbContext
 
     public virtual DbSet<OrderItem> OrderItems { get; set; }
 
-    public virtual DbSet<Product> Products { get; set; }
+    public virtual DbSet<Products> Products { get; set; }
 
-    public virtual DbSet<SalesPerson> SalesPersons { get; set; }
+    public virtual DbSet<SalesPersons> SalesPersons { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -55,14 +55,14 @@ public partial class MyShopDbContext : DbContext
             entity.HasOne(d => d.Product).WithMany(p => p.OrderItems).HasConstraintName("FK_OrderItems_Products");
         });
 
-        modelBuilder.Entity<Product>(entity =>
+        modelBuilder.Entity<Products>(entity =>
         {
             entity.Property(e => e.ProductName).IsFixedLength();
             entity.Property(e => e.Status).IsFixedLength();
             entity.Property(e => e.Varienty).IsFixedLength();
         });
 
-        modelBuilder.Entity<SalesPerson>(entity =>
+        modelBuilder.Entity<SalesPersons>(entity =>
         {
             entity.HasKey(e => e.SalesPersonId).HasName("PK_SalesPerson");
 

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SampleWebApiCore.Models;
 
-public partial class SalesPerson
+public partial class SalesPersons
 {
     [Key]
     public int SalesPersonId { get; set; }
