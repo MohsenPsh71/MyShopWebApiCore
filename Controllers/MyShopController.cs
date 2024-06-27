@@ -22,6 +22,7 @@ namespace SampleWebApiCore.Controllers
         }
 
         [HttpGet("{id}")]
+        [ResponseCache(Duration = 60)]
         public async Task<IActionResult> GetCustomer([FromRoute] int id)
         {
             var customer = await _context.Customers.SingleOrDefaultAsync(c => c.CustomerId == id);

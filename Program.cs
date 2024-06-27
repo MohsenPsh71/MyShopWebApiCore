@@ -20,6 +20,7 @@ builder.Services.AddDbContext<MyShopDbContext>(options =>
 builder.Services.AddTransient<ICustomerRepository, CustomerRepository>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<ISalesPersonsRepository, SalesPersonsRepository>();
+builder.Services.AddResponseCaching();
 
 var app = builder.Build();
 
@@ -29,6 +30,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseResponseCaching();
 
 app.UseHttpsRedirection();
 
