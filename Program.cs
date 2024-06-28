@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SampleWebApiCore.Contracts;
 using SampleWebApiCore.Models;
 using SampleWebApiCore.Repositories;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +27,37 @@ builder.Services.AddTransient<ISalesPersonsRepository, SalesPersonsRepository>()
 builder.Services.AddResponseCaching();
 builder.Services.AddMemoryCache();
 
+//JWT
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateIssuer = true,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = "https://localhost:7287",
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("OurVerifyTopLearn"))
+        };
+    });
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("EnableCors", builder =>
+    {
+        builder.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()
+            .Build();
+    });
+
+
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -35,6 +69,9 @@ if (app.Environment.IsDevelopment())
 app.UseResponseCaching();
 
 app.UseHttpsRedirection();
+
+app.UseCors("EnableCors");
+app.UseAuthentication();
 
 app.UseAuthorization();
 
