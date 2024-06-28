@@ -5,16 +5,18 @@ using System.Threading.Tasks;
 using SampleWebApiCore.Contracts;
 using SampleWebApiCore.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace SampleWebApiCore.Repositories
 {
     public class CustomerRepository : ICustomerRepository
     {
         private MyShopDbContext _context;
-
-        public CustomerRepository(MyShopDbContext context)
+        private IMemoryCache _cache;
+        public CustomerRepository(MyShopDbContext context, IMemoryCache cache)
         {
             _context = context;
+            _cache = cache;
         }
 
 
@@ -27,7 +29,20 @@ namespace SampleWebApiCore.Repositories
 
         public async Task<Customer> Find(int id)
         {
-            return await _context.Customers.Include(c => c.Orders).SingleOrDefaultAsync(c => c.CustomerId == id);
+            var cacheCustomer = _cache.Get<Customer>(id);
+            if (cacheCustomer != null)
+            {
+                return cacheCustomer;
+            }
+            else
+            {
+                var customer = await _context.Customers.Include(c => c.Orders).SingleOrDefaultAsync(c => c.CustomerId == id);
+                var cacheOption = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromSeconds(60));
+                _cache.Set(customer.CustomerId, customer, cacheOption);
+                return customer;
+
+            }
         }
 
         public IEnumerable<Customer> GetAll()

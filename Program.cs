@@ -20,7 +20,9 @@ builder.Services.AddDbContext<MyShopDbContext>(options =>
 builder.Services.AddTransient<ICustomerRepository, CustomerRepository>();
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<ISalesPersonsRepository, SalesPersonsRepository>();
+
 builder.Services.AddResponseCaching();
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 
