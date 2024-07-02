@@ -38,7 +38,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             ValidIssuer = "https://localhost:7287",
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("OurVerifyTopLearn"))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is my secret key Mohsen ApiFor@V@Hello"))
         };
     });
 
@@ -47,8 +47,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("EnableCors", builder =>
     {
-        builder.AllowAnyOrigin()
-            .AllowAnyHeader()
+        builder.AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials()
             .Build();
