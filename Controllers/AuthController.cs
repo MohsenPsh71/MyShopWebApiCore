@@ -22,15 +22,15 @@ namespace EshopApi.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("The Model Is Not Valid");
+                return BadRequest("The Model Is Not Valid"); 
             }
 
-            if (login.UserName.ToLower() != "Mohsen" || login.Password.ToLower() != "123")
+            if (login.UserName.ToLower() != "mohsen" || login.Password.ToLower() != "123")
             {
                 return Unauthorized();
             }
 
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("OurVerifyTopLearn"));
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("this is my secret key Mohsen ApiFor@V@Hello"));
 
             var signinCredentials=new SigningCredentials(secretKey,SecurityAlgorithms.HmacSha256);
 
